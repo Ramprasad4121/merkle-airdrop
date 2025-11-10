@@ -1,10 +1,10 @@
 # Merkle Airdrop
 
-<div align="center">
+<!-- <div align="center">
   <a href="https://github.com/Ramprasad4121/merkle-airdrop">
     <img src="docs/images/merkle-banner.png" alt="Merkle Airdrop Banner" width="600" height="300">
   </a>
-</div>
+</div> -->
 
 <div align="center">
   Merkle Tree-Based Token Airdrop for Ethereum & zkSync
@@ -61,7 +61,7 @@ Efficient Merkle tree-based airdrop system for token distribution to whitelisted
 
 Why this? To demonstrate scalable airdrops with cross-chain support using Foundry tooling.
 
-<details>
+<!-- <details>
 <summary>Screenshots</summary>
 <br>
 
@@ -71,7 +71,7 @@ Why this? To demonstrate scalable airdrops with cross-chain support using Foundr
 
 > Add screenshots of `make merkle` output and `make claim` transaction.
 
-</details>
+</details> -->
 
 ### Built With
 
