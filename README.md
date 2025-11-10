@@ -1,249 +1,184 @@
+# Merkle Airdrop
+
+<div align="center">
+  <a href="https://github.com/Ramprasad4121/merkle-airdrop">
+    <img src="docs/images/merkle-banner.png" alt="Merkle Airdrop Banner" width="600" height="300">
+  </a>
+</div>
+
+<div align="center">
+  Merkle Tree-Based Token Airdrop for Ethereum & zkSync
+  <br />
+  <a href="#about"><strong>Explore the demo »</strong></a>
+  <br />
+  <br />
+  <a href="https://github.com/Ramprasad4121/merkle-airdrop/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
+  ·
+  <a href="https://github.com/Ramprasad4121/merkle-airdrop/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
+  ·
+  <a href="https://github.com/Ramprasad4121/merkle-airdrop/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+">Ask a Question</a>
+</div>
 
-# merkle-airdrop
+<div align="center">
+<br />
+
+[![Solidity](https://img.shields.io/badge/Solidity-^0.8.20-blue)](https://soliditylang.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+
+</div>
 
-## Requirements
+<details open="open">
+<summary>Table of Contents</summary>
 
-- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-  - You'll know you did it right if you can run `git --version` and you see a response like `git version x.x.x`
-- [foundry](https://getfoundry.sh/)
-  - You'll know you did it right if you can run `forge --version` and you see a response like `forge 0.2.0 (816e00b 2023-03-16T00:05:26.396218Z)`
+- [Merkle Airdrop](#merkle-airdrop)
+  - [About](#about)
+    - [Built With](#built-with)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+    - [Local Ethereum (Anvil)](#local-ethereum-anvil)
+    - [zkSync Local](#zksync-local)
+    - [zkSync Sepolia Testnet](#zksync-sepolia-testnet)
+    - [Testing](#testing)
+    - [Other Commands](#other-commands)
+  - [Roadmap](#roadmap)
+  - [Support](#support)
+  - [Project Assistance](#project-assistance)
+  - [Contributing](#contributing)
+  - [Authors \& Contributors](#authors--contributors)
+  - [Security](#security)
+  - [License](#license)
+  - [Acknowledgements](#acknowledgements)
 
-To get started, we are assuming you're working with vanilla `foundry` and not `foundry-zksync` to start. 
+</details>
 
+---
 
-## Quickstart
+## About
 
-```bash
-git clone https://github.com/Ramprasad4121/merkle-airdrop.git
-cd merkle-airdrop
-make # or forge install && forge build if you don't have make 
-```
+Efficient Merkle tree-based airdrop system for token distribution to whitelisted addresses. Generates proofs, deploys contracts, and enables claims on Ethereum (Anvil) or zkSync (local/Sepolia). Ensures gas-efficient, verifiable claims.
 
-# Usage
+Why this? To demonstrate scalable airdrops with cross-chain support using Foundry tooling.
 
-## Pre-deploy: Generate merkle proofs
+<details>
+<summary>Screenshots</summary>
+<br>
 
-We are going to generate merkle proofs for an array of addresses to airdrop funds to. If you'd like to work with the default addresses and proofs already created in this repo, skip to [deploy](#deploy)
+|                               Merkle Proof Generation                               |                               Claim Transaction                               |
+| :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
+| <img src="docs/images/merkle-generate.png" title="Proof Output" width="100%"> | <img src="docs/images/claim-tx.png" title="Claim on zkSync" width="100%"> |
 
-If you'd like to work with a different array of addresses (the `whitelist` list in `GenerateInput.s.sol`), you will need to follow the following:
+> Add screenshots of `make merkle` output and `make claim` transaction.
 
-First, the array of addresses to airdrop to needs to be updated in `GenerateInput.s.sol. To generate the input file and then the merkle root and proofs, run the following:
+</details>
 
-Using make:
+### Built With
 
-```bash
-make merkle
-```
+- [Foundry](https://book.getfoundry.sh/) – Forge, Cast, Anvil
+- [foundry-zksync](https://github.com/zksync-toolchain/foundry-zksync) – zkSync support
+- Solidity ^0.8.20
+- [Make](https://www.gnu.org/software/make/) – Automation
+- zkSync CLI, Docker – Local node
 
-Or using the commands directly:
+## Getting Started
 
-```bash
-forge script script/GenerateInput.s.sol:GenerateInput && forge script script/MakeMerkle.s.sol:MakeMerkle
-```
+### Prerequisites
 
-Then, retrieve the `root` (there may be more than 1, but they will all be the same) from `script/target/output.json` and paste it in the `Makefile` as `ROOT` (for zkSync deployments) and update `s_merkleRoot` in `DeployMerkleAirdrop.s.sol` for Ethereum/Anvil deployments.
+- Git (`git --version`)
+- Foundry (`curl -L https://foundry.paradigm.xyz | bash && foundryup`; `forge --version`)
+- For zkSync: foundry-zksync (`curl -L https://github.com/zksync-toolchain/foundry-zksync/releases/latest/download/foundryup-init.sh | bash`; `foundryup-zksync`), npm (`npm --version`), Docker (`docker --version`)
 
-# Deploy 
+### Installation
 
-## Deploy to Anvil
+1. Clone:
+   ```bash
+   git clone https://github.com/Ramprasad4121/merkle-airdrop.git
+   cd merkle-airdrop
+   ```
 
-```bash
-# Optional, ensure you're on vanilla foundry
-foundryup
-# Run a local anvil node
-make anvil
-# Then, in a second terminal
-make deploy
-```
+2. Setup:
+   ```bash
+   make
+   ```
+   *(Runs `forge install && forge build`)*
 
-## Deploy to a zkSync local node
+3. Update whitelist in `script/GenerateInput.s.sol` and generate proofs: `make merkle`
+4. Update `ROOT` in Makefile from `target/output.json`.
 
-### zkSync prerequisites
+## Usage
 
-- [foundry-zksync](https://github.com/matter-labs/foundry-zksync)
-  - You'll know you did it right if you can run `forge --version` and you see a response like `forge 0.0.2 (816e00b 2023-03-16T00:05:26.396218Z)`. 
-- [npx & npm](https://docs.npmjs.com/cli/v10/commands/npm-install)
-  - You'll know you did it right if you can run `npm --version` and you see a response like `7.24.0` and `npx --version` and you see a response like `8.1.0`.
-- [docker](https://docs.docker.com/engine/install/)
-  - You'll know you did it right if you can run `docker --version` and you see a response like `Docker version 20.10.7, build f0df350`.
-  - Then, you'll want the daemon running, you'll know it's running if you can run `docker --info` and in the output you'll see something like the following to know it's running:
-```bash
-Client:
- Context:    default
- Debug Mode: false
-```
+### Local Ethereum (Anvil)
 
-### Setup local zkSync node 
+- Start node: `make anvil`
+- Deploy: `make deploy`
+- Sign claim: `make sign`
+- Claim: `make claim`
+- Check balance: `make balance`
 
-Run the following:
+### zkSync Local
 
-```bash
-npx zksync-cli dev config
-```
+1. Config: `npx zksync-cli dev config` (select in-memory)
+2. Start: `npx zksync-cli dev start` or `make zk-anvil`
+3. Deploy: `make deploy-zk`
+4. Interact: `./interactZk.sh`
 
-And select: `In memory node` and do not select any additional modules.
+### zkSync Sepolia Testnet
 
-Then run:
-```bash
-npx zksync-cli dev start
-```
+- Deploy: `make deploy-zk-sepolia` (enter password)
 
-And you'll get an output like:
+### Testing
 
-```
-In memory node started v0.1.0-alpha.22:
- - zkSync Node (L2):
-  - Chain ID: 260
-  - RPC URL: http://127.0.0.1:8011
-  - Rich accounts: https://era.zksync.io/docs/tools/testing/era-test-node.html#use-pre-configured-rich-wallets
-```
+- Vanilla: `forge test`
+- zkSync: `make zktest`
+- Coverage: `forge coverage --report lcov`
+- Gas: `forge snapshot`
 
-This will save your zkSync configuration so you won't have to run `npx zksync-cli dev config` again. 
+### Other Commands
 
-In the future, you can just run:
-```bash
-make zk-anvil
-``` 
+- Format: `forge fmt`
+- Clean: `make clean`
 
-To close the zkSync node (in the future, leave it running for now), run:
-```bash
-docker ps
-```
+## Roadmap
 
-To get the container ID from the result. If there is no result, then docker might not be running, and you're all set. Otherwise run:
-```bash
-docker kill ${CONTAINER_ID}
-```
+[Open issues](https://github.com/Ramprasad4121/merkle-airdrop/issues).
 
-### Deploy to a local zkSync network 
-```bash
-# Optional, ensure you're on foundry-zksync
-foundryup-zksync
-# Setup a docker container for zkSync (if you haven't already)
-# make zk-anvil
-# deploy
-make deploy-zk
-```
+- Enhancements: Multi-token support, frontend
+- Bugs: Vote with 👍
 
-### Deploy to zkSync Sepolia
+Future: Mainnet deployment, EIP-712 signatures.
 
-Be sure you have the following:
-- `ZKSYNC_SEPOLIA_RPC_URL` set in your `.env` file
-- An account named `default` set up your `cast`
-  - [See here to set one up](https://www.youtube.com/watch?v=VQe7cIpaE54)
+## Support
 
-```bash
-# Optional, ensure you're on foundry-zksync
-foundryup-zksync
-# Deploy
-make deploy-zk-sepolia
-# You'll be prompted to enter your password
-```
+- [Issues](https://github.com/Ramprasad4121/merkle-airdrop/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
+- [X](https://x.com/0xramprasad)
 
-## Interacting - zkSync local network
+## Project Assistance
 
-The following steps allow the second default anvil address (0x70997970C51812dc3A010C7d01b50e0d17dc79C8) to call claim and pay for the gas on behalf of the first default anvil address (0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266) which will recieve the airdrop. 
+- ⭐ [Star](https://github.com/Ramprasad4121/merkle-airdrop)
+- Tweet: "#Airdrop #zkSync Merkle"
+- Blog: [Dev.to](https://dev.to/)
 
-### Setup local zksync node, deploy contracts, and run airdrop claim
+## Contributing
 
-> See [Deploy to a zkSync local node prerequisites](#zksync-prerequisites) for prerequisites.
+Fork, branch (`git checkout -b feature/xyz`), commit, PR. See [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
-On `foundry-zksync`, setup a local node and deploy the zkSync contracts. You can do both steps with this two commands:
+## Authors & Contributors
 
-```bash
-foundryup-zksync
-chmod +x interactZk.sh && ./interactZk.sh
-```
+- [Ramprasad4121](https://github.com/Ramprasad4121)
 
-You'll see the output of:
-1. Deploying zkSync smart contracts
-2. Signing your airdrop claim
-3. Claiming the airdrop
+[Contributors](https://github.com/Ramprasad4121/merkle-airdrop/contributors)
 
-All from the `./interactZk.sh` script.
+## Security
 
-## Interacting - Local anvil network
+Review proofs before prod. Report: [SECURITY.md](docs/SECURITY.md). "As is."
 
-### Setup anvil and deploy contracts
+## License
 
-Swap back to vanilla foundry and run an anvil node:
+MIT License. See [LICENSE](LICENSE).
 
-```bash
-foundryup
-make anvil
-make deploy
-# Copy the BagelToken address & Airdrop contract address
-```
-Copy the Bagel Token and Aidrop contract addresses and paste them into the `AIRDROP_ADDRESS` and `TOKEN_ADDRESS` variables in the `MakeFile`
+## Acknowledgements
 
-The following steps allow the second default anvil address (`0x70997970C51812dc3A010C7d01b50e0d17dc79C8`) to call claim and pay for the gas on behalf of the first default anvil address (`0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`) which will recieve the airdrop. 
-
-### Sign your airdrop claim  
-
-```bash
-# in another terminal
-make sign
-```
-
-Retrieve the signature bytes outputted to the terminal and add them to `Interact.s.sol` *making sure to remove the `0x` prefix*. 
-
-Additionally, if you have modified the claiming addresses in the merkle tree, you will need to update the proofs in this file too (which you can get from `output.json`)
-
-
-### Claim your airdrop
-
-Then run the following command:
-
-```bash
-make claim
-```
-
-### Check claim amount
-
-Then, check the claiming address balance has increased by running
-
-```bash
-make balance
-```
-
-NOTE: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266` is the default anvil address which has recieved the airdropped tokens.
-
-
-## Testing
-
-```bash
-foundryup
-forge test
-```
-
-for for zkSync
-
-```bash
-# This will run `foundryup-zksync && forge test --zksync && foundryup`
-make zktest
-```
-
-### Test Coverage
-
-```bash
-forge coverage
-```
-
-## Estimate gas
-
-You can estimate how much gas things cost by running:
-
-```
-forge snapshot
-```
-
-And you'll see an output file called `.gas-snapshot`
-
-
-# Formatting
-
-
-To run code formatting:
-```
-forge fmt
-```
+- [Foundry](https://getfoundry.sh/) – Tooling
+- [zkSync](https://zksync.io/) – L2 support
+- Ethereum community.
