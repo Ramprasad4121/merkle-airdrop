@@ -32,7 +32,7 @@ contract MakeMerkle is Script, ScriptHelper {
 
     string private elements = vm.readFile(string.concat(vm.projectRoot(), inputPath)); // get the absolute path
     string[] private types = elements.readStringArray(".types"); // gets the merkle tree leaf types from json using
-        // forge standard lib cheatcode
+    // forge standard lib cheatcode
     uint256 private count = elements.readUint(".count"); // get the number of leaf nodes
 
     // make three arrays the same size as the number of leaf nodes
@@ -50,7 +50,12 @@ contract MakeMerkle is Script, ScriptHelper {
     }
 
     /// @dev Generate the JSON entries for the output file
-    function generateJsonEntries(string memory _inputs, string memory _proof, string memory _root, string memory _leaf)
+    function generateJsonEntries(
+        string memory _inputs,
+        string memory _proof,
+        string memory _root,
+        string memory _leaf
+        )
         internal
         pure
         returns (string memory)

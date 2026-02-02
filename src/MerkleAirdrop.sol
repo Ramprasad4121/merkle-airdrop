@@ -44,7 +44,14 @@ contract MerkleAirdrop is EIP712 {
     }
 
     // claim the airdrop using a signature from the account owner
-    function claim(address account, uint256 amount, bytes32[] calldata merkleProof, uint8 v, bytes32 r, bytes32 s)
+    function claim(
+        address account,
+        uint256 amount,
+        bytes32[] calldata merkleProof,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    )
         external
     {
         if (s_hasClaimed[account]) {
@@ -94,7 +101,13 @@ contract MerkleAirdrop is EIP712 {
     //////////////////////////////////////////////////////////////*/
 
     // verify whether the recovered signer is the expected signer/the account to airdrop tokens for
-    function _isValidSignature(address signer, bytes32 digest, uint8 _v, bytes32 _r, bytes32 _s)
+    function _isValidSignature(
+        address signer,
+        bytes32 digest,
+        uint8 _v,
+        bytes32 _r,
+        bytes32 _s
+        )
         internal
         pure
         returns (bool)
