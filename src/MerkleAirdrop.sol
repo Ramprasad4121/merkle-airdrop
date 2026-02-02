@@ -107,7 +107,7 @@ contract MerkleAirdrop is EIP712 {
         uint8 _v,
         bytes32 _r,
         bytes32 _s
-        )
+    )
         internal
         pure
         returns (bool)

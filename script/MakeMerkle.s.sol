@@ -55,7 +55,7 @@ contract MakeMerkle is Script, ScriptHelper {
         string memory _proof,
         string memory _root,
         string memory _leaf
-        )
+    )
         internal
         pure
         returns (string memory)
